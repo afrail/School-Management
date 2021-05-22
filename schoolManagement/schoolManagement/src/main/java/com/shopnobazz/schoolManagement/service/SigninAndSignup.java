@@ -5,6 +5,7 @@ import com.shopnobazz.schoolManagement.domain.User;
 import com.shopnobazz.schoolManagement.dto.LoginRequest;
 import com.shopnobazz.schoolManagement.dto.RoleDto;
 import com.shopnobazz.schoolManagement.dto.UserDto;
+import com.shopnobazz.schoolManagement.dto.response.JwtResponse;
 import com.shopnobazz.schoolManagement.jwt.JwtTokenProvider;
 import com.shopnobazz.schoolManagement.repository.RoleRepository;
 import com.shopnobazz.schoolManagement.repository.UserRepository;
@@ -53,10 +54,9 @@ public ResponseEntity<String> signup(UserDto userDto){
         
         for(RoleDto dto: userDto.getRoles())
         {
-        	System.out.println(dto);
-        	System.out.println(role);
+
           BeanUtils.copyProperties(dto, role);
-          System.out.println(role);
+
           roles.add(role);
         }
         
@@ -66,7 +66,7 @@ public ResponseEntity<String> signup(UserDto userDto){
 //        });
 
         roles.stream().forEach(role2 ->{ 
-        	System.out.println(role2);
+
         	roleRepository.save(role2);
 
         });
@@ -85,18 +85,19 @@ public ResponseEntity<String> signup(UserDto userDto){
     }
 
 
-  public String login(LoginRequest loginRequest){
+  public JwtResponse login(LoginRequest loginRequest){
       Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                       loginRequest.getUsername(),
                       loginRequest.getPassword()
               )
-      );
 
+      );
+      System.out.println(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,");
       SecurityContextHolder.getContext().setAuthentication(authentication);
 
       String jwt = jwtProvider.generateJwtToken(authentication);
-      System.out.println(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,");
-    return jwt;
+
+    return new JwtResponse(jwt);
   }
 
 

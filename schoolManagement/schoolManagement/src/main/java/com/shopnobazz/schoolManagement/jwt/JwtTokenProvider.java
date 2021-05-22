@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenProvider {
     private static final Logger logger= LoggerFactory.getLogger(JwtTokenProvider.class);
+
      @Value("${itvillage.app.jwtSecret}")
     private String jwtSecret;
      @Value("${itvillage.app.jwtExpiration}")
